@@ -1,0 +1,22 @@
+Challenge/
+	├── runner/								# thin layer that integrates with judge-core hooks
+	│	├── harness.py						# orchestrates build/run via manifest; measures time/mem; exits with codes
+	│	├── sandbox.yaml					# policy knobs mirrored by CI (cpus, mem, pids, timeouts, net=none, rofs)
+	│	├── hooks/							# pure-Python stateless hooks loaded by judge-core
+	│	│	├── judge_exec.py				# reads manifest, expands $INPUT/$OUTPUT/$SEED, runs command safely
+	│	│	├── score.py					# correctness + time/mem penalties; emits per-case JSON
+	│	│	└── io.py						# parsing, canonicalization, diffs, tolerances
+	│	└── schemas/
+	│		├── manifest.schema.json		# one-line build/run contract schema
+	│		└── leaderboard.schema.json		# board JSON structure (id, handle, score, t_ms, mem_mb, meta)
+	├── tools/
+	│	├── local_validate.py				# reproduce CI locally against examples (no network)
+	│	├── update_hub_leaderboard.py		# writes/merges to challenges-hub/<slug>.json (uses repo token)
+	│	├── gen_examples.py					# optional helper to synthesize/trick inputs
+	│	└── parse_manifest.py				# validates manifest.yml vs schema; prints normalized commands
+	└── submissions/
+		├── README.md						# PR layout or gateway instructions; “code reveal at end” policy
+		└── template/
+			├── manifest.yml				# language/build/run example with $INPUT/$OUTPUT/$SEED
+			├── solve.py					# toy baseline (purely illustrative)
+			└── README.md

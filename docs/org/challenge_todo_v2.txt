@@ -1,0 +1,255 @@
+PHASE 1 — Code/Test the Scaffold Structure of The Challenge Project
+===================================================================
+
+Day 1 #> Repo hygiene + metadata + docs skeleton
+================================================
+> [ ] <Challenge : Hygiene> Create/curate .gitignore, .gitattributes, .dockerignore, .editorconfig with sane defaults [00:45].
+> [ ] <Challenge : Scripts> Implement clean.sh (remove caches, build, artifacts, __pycache__, .pytest_cache, .mypy_cache) with dry-run flag [00:30].
+> [ ] <Challenge : Policy> Add LICENSE (MIT), CODE_OF_CONDUCT.md, CONTRIBUTING.md, SECURITY.md, CITATION.cff [01:00].
+> [ ] <Challenge : Docs> Draft README.md with single-URL anchors (Intro • Rules • Scoring • Data/IO • Submissions • Leaderboard) [01:00].
+> [ ] <Challenge : Specs> Seed RULES.md and SCORING.md scaffolds (invariants vs wildcards, freeze policy; exact formula/tie-breakers placeholders) [01:30].
+> [ ] <Challenge : Specs> Seed DATA.md (I/O schema, file conventions) and SUBMISSIONS.md (PR/gateway flow, manifest contract) [01:00].
+> [ ] <Challenge : Process> Start CHANGELOG.md, CLARIFICATIONS.md (dated entries format) and FAQ.md [00:45].
+> [ ] <Challenge : Config> Add VERSION (1.0.0-pre) and initial challenge.yaml (slug, title, judge_image, cpu/mem/time caps) [00:45].
+> [ ] <Challenge : QA> Create .Rule-Coverage checklist (invariants, wildcards, adversarial classes) [00:30].
+> [ ] <Challenge : Tooling> Add .pre-commit-config.yaml (ruff/black/isort/yamllint/markdownlint) and basic ruff.toml, mypy.ini [00:45].
+
+Day 2 #> Runner core (harness + hooks + schemas)
+================================================
+> [ ] <Challenge : Runner> Scaffold runner/harness.py (read manifest, stage I/O dirs, call hooks, capture exit, emit run JSON) [01:30].
+> [ ] <Challenge : Sandbox> Write runner/sandbox.yaml (cpus, memory, pids-limit, net=none, read-only fs, timeouts) with comments [00:30].
+> [ ] <Challenge : Hook> Implement hooks/judge_exec.py skeleton (expand $INPUT/$OUTPUT/$SEED, safe argv, exit codes) [01:00].
+> [ ] <Challenge : Hook> Implement hooks/io.py skeleton (canonicalize input/output, tolerant diff helpers) [01:00].
+> [ ] <Challenge : Hook> Implement hooks/score.py skeleton (correctness metric, runtime/memory penalty placeholders) [01:00].
+> [ ] <Challenge : Schemas> Define schemas/manifest.schema.json (one-line build/run, env, constraints) [01:00].
+> [ ] <Challenge : Schemas> Define schemas/leaderboard.schema.json (handle, score, t_ms, mem_mb, meta, timestamp) [00:45].
+> [ ] <Challenge : Tools> Implement tools/parse_manifest.py (validate against schema, print normalized commands) [00:45].
+> [ ] <Challenge : Tests> tests/test_manifest_schema.py (valid/invalid manifests, helpful errors) [00:45].
+> [ ] <Challenge : Tests> tests/test_io_parsers.py (round-trip parse, whitespace/Unicode edges) [00:45].
+
+Day 3 #> Tools + examples + baseline + scoring tests
+====================================================
+> [ ] <Challenge : Tools> Implement tools/local_validate.py (run hooks on examples; no network; pretty summary) [01:15].
+> [ ] <Challenge : Tools> Implement tools/update_hub_leaderboard.py (merge entry, sort, write JSON; dry-run flag) [00:45].
+> [ ] <Challenge : Tools> Implement tools/gen_examples.py (synthesize small/tricky inputs; seedable) [01:00].
+> [ ] <Challenge : Examples> Populate examples/inputs {sample1.in, sample2.in, tricky-open-castle.in} and outputs for sample* [01:00].
+> [ ] <Challenge : Examples> Produce examples/logs/expected_run.log via local_validate on sample1 [00:30].
+> [ ] <Challenge : Submissions> Fill submissions/template/{manifest.yml, solve.py, README.md} (toy baseline) [01:00].
+> [ ] <Challenge : Data> Write data/README.md and create data/public/ placeholder; ensure artifacts/ is .gitignored [00:30].
+> [ ] <Challenge : Tests> tests/test_scoring.py (tolerances, penalties, tie-breakers; golden values for samples) [01:00].
+> [ ] <Challenge : Docs> Update README and SUBMISSIONS with example manifest and local_validate snippet [00:45].
+
+Day 4 #> Dev environment, Docker (dev), Makefile, Sphinx docs
+=============================================================
+> [ ] <Challenge : Config> Create pyproject.toml / requirements.txt (minimal: click/typer, pydantic/jsonschema, pytest) [00:45].
+> [ ] <Challenge : Make> Add Makefile targets: help, lint, test, validate-local, docs, clean [00:45].
+> [ ] <Challenge : Docker> Write docker/Dockerfile.dev (python3, deps, non-root) + entrypoint.sh (invoke harness) [01:00].
+> [ ] <Challenge : Env> Add .env.example and .envrc (export CHALLENGE_DEBUG, LOG_LEVEL, HUB_URL placeholders) [00:30].
+> [ ] <Challenge : QA> Wire pre-commit to run ruff/markdownlint/yamllint on commit; doc the install in CONTRIBUTING [00:30].
+> [ ] <Challenge : Docs> Sphinx docs: docs/source/conf.py + index.rst (mirrors single-URL layout) [01:00].
+> [ ] <Challenge : Docs> usage/{quickstart.rst, submission_contract.rst} and challenge/{story.rst, rules.rst, scoring.rst, data_io.rst} [01:00].
+> [ ] <Challenge : Docs> dev/{architecture.rst, ci_cd.rst} and dev/rst_creator.py scaffold (md/yaml → rst stubs) [00:45].
+> [ ] <Challenge : Meta> Add .github/CODEOWNERS and ISSUE_TEMPLATEs (submission, clarification, bug) [00:30].
+
+Day 5 #> CI workflows (hosted runner), concurrency, badges
+==========================================================
+> [ ] <Challenge : CI> Create .github/workflows/validate_submission.yml (pull judge image, enforce cpus/mem/net=none, run harness) [01:45].
+> [ ] <Challenge : CI> Create update_leaderboard.yml (on label “Ready to rank”; commit to challenges-hub/<slug>.json via token) [01:15].
+> [ ] <Challenge : CI> Create release_docs.yml (build Sphinx, publish to Pages/gh-pages) [00:45].
+> [ ] <Challenge : CI> Create linkcheck.yml (periodic) and set artifact retention (7–14 days) [00:30].
+> [ ] <Challenge : CI> Add concurrency groups + job timeouts + cache strategy (pip) across workflows [00:45].
+> [ ] <Challenge : Docs> Document required secrets/tokens and safety limits in SUBMISSIONS.md & dev/ci_cd.rst [00:30].
+> [ ] <Challenge : Polish> Add CI badges to README (validate, leaderboard, docs) [00:15].
+> [ ] <Challenge : QA> Open a self-PR adding sample submission to trigger validate_submission.yml (smoke) [00:45].
+
+Day 6 #> Hardening, full dry-run, initial tag
+=============================================
+> [ ] <Challenge : Lint> Run lint/type-check; fix style and typing nits across runner/tools/docs snippets [00:45].
+> [ ] <Challenge : Schemas> Validate schemas with additional fixtures; ensure helpful messages on failure [00:30].
+> [ ] <Challenge : Runner> Edge-case tests for judge_exec (long args, spaces, Unicode) and sandbox (time/mem caps) [01:15].
+> [ ] <Challenge : Leaderboard> Generate sample leaderboards/leaderboard.json conforming to schema [00:45].
+> [ ] <Challenge : Hygiene> Verify clean.sh and .dockerignore effectiveness (dry-run + destructive modes) [00:30].
+> [ ] <Challenge : Docs> Cross-link anchors; ensure index.rst mirrors README; build docs locally and inspect [00:45].
+> [ ] <Challenge : Release> Finalize challenge.yaml (limits, image tag), bump VERSION → 0.1.0, write initial CHANGELOG entry [00:30].
+> [ ] <Challenge : Community> Create GitHub Discussions categories (Announcements, Clarifications, Strategy, Show & Tell) and link from README [00:30].
+> [ ] <Challenge : Compliance> Add license headers where needed; verify CODEOWNERS coverage [00:30].
+
+PHASE 2 — Write/Code/Rules/Config the first Challenge: “Ball o’ Some”
+=====================================================================
+
+Day 7 #> Formal spec, I/O grammar, invariants & wildcards
+=========================================================
+> [ ] <Challenge : Spec> Finalize challenge.yaml for slug `ball-o-some` (title, limits, judge_image tag, categories). [00:30].
+> [ ] <Challenge : Rules> Write RULES.md (explicit invariants vs wildcards, freeze policy, allowed/disallowed behaviors, multi-arch note). [01:30].
+> [ ] <Challenge : Data> Author DATA.md with precise I/O grammar: emoji/token lexicon, normalization table, whitespace rules, examples. [01:15].
+> [ ] <Challenge : Spec> Define acceptance criteria for valid matching output (format, uniqueness not required, tie-handling). [00:45].
+> [ ] <Challenge : Spec> Draft edge-case catalogue (odd cycles, repeats, open layouts, isolated nodes, near-perfect graphs). [00:45].
+> [ ] <Challenge : Docs> Update README anchors for Ball o’ Some sections; link to RULES/DATA/SCORING. [00:45].
+> [ ] <Challenge : QA> Expand .Rule-Coverage to map each wildcard/invariant → adversarial family ID. [00:45].
+> [ ] <Challenge : Process> Seed CLARIFICATIONS.md and CHANGELOG.md entries for PHASE 2 kickoff. [00:30].
+> [ ] <Challenge : Spec> Define official resource caps for this challenge (CPU=1.0, RAM=4GB, wall=120s) in sandbox.yaml comments. [00:30].
+
+Day 8 #> Parsers/validators wired to Ball o’ Some format
+========================================================
+> [ ] <Challenge : Hooks> Extend runner/hooks/io.py with Ball o’ Some parser & canonicalizer (emoji→tokens, aliases, Unicode-safe). [01:15].
+> [ ] <Challenge : Hooks> Implement output validator for matching format (pair syntax, dup detection, vertex domain checks). [01:00].
+> [ ] <Challenge : Runner> Teach harness.py to load challenge.yaml and select Ball o’ Some I/O adapters. [00:45].
+> [ ] <Challenge : Tools> Update tools/local_validate.py to accept `--challenge ball-o-some` and pretty-print diffs. [00:30].
+> [ ] <Challenge : Data> Provide emoji→ID mapping asset (JSON) and round-trip tests. [00:45].
+> [ ] <Challenge : Tests> tests/test_io_parsers.py: success/failure cases incl. whitespace/Unicode/alias edges. [01:00].
+> [ ] <Challenge : Tests> Add property-ish fuzz for tiny graphs (generate/read/write back; equality under normalization). [00:45].
+> [ ] <Challenge : UX> Improve error messages with actionable hints (first-bad-line, context snippet). [00:30].
+
+Day 9 #> Baselines & reference solvers (for ground truth)
+=========================================================
+> [ ] <Challenge : Baseline> Implement a naive greedy matcher (documented non-optimal) for didactic baseline. [01:15].
+> [ ] <Challenge : Baseline> Implement reference maximum matching via Blossom (DEV-only path) for ground-truth generation. [02:00].
+> [ ] <Challenge : Tests> Unit tests comparing greedy vs blossom on curated mini-cases; verify optimal sizes. [01:15].
+> [ ] <Challenge : Hooks> Ensure score.py accepts any maximum matching (validate + compare size to reference best). [00:45].
+> [ ] <Challenge : Data> Produce golden outputs for examples/sample*.{in,out} using reference solver. [00:30].
+> [ ] <Challenge : QA> Random stress on small/medium graphs; record timing and peak memory snapshots. [01:15].
+> [ ] <Challenge : Docs> DEV notes: keep solver private during contest; describe usage post-reveal. [00:30].
+
+Day 10 #> Generators & test banks (public + hidden)
+===================================================
+> [ ] <Challenge : Generator> Implement gen_examples.py families — Part 1 of 2: bipartite/easy, odd-cycle traps, repeated-emoji cases. [02:00].
+> [ ] <Challenge : Generator> Implement gen_examples.py families — Part 2 of 2: dense graphs, sparse with isolates, near-perfect, open-layouts. [01:30].
+> [ ] <Challenge : Data> Curate public examples set (3–5 files) with short explanations in examples/README.md. [00:45].
+> [ ] <Challenge : Data> Build hidden test suites: sanity/basic/tricky/stress with seeds + sizes; store metadata (not inputs) in repo. [01:15].
+> [ ] <Challenge : Baseline> Generate gold outputs for hidden suites with reference solver; stash artifacts privately. [00:45].
+> [ ] <Challenge : Tools> Run local_validate over all public samples; archive illustrative logs. [00:45].
+> [ ] <Challenge : Docs> Write adversarial-family rationale table (family → rule it probes → expected failure modes). [01:00].
+
+Day 11 #> Scoring formula, measurement capture, end-to-end
+==========================================================
+> [ ] <Challenge : Scoring> Finalize SCORING.md with exact formula: 1000*correctness − α·runtime_ms − β·peak_MB; tie-breakers; robustness bonus. [01:30].
+> [ ] <Challenge : Runner> Ensure harness captures wall time, CPU time, and peak RSS (cgroups or /usr/bin/time) under sandbox limits. [01:00].
+> [ ] <Challenge : Scoring> Implement robustness bonus triggers (graceful handling of optional clauses, structured rejects). [00:45].
+> [ ] <Challenge : Docs> Add worked scoring examples (pass/fail, near-max, slow-correct) to SCORING.md. [01:00].
+> [ ] <Challenge : Tools> Seed a sample leaderboard JSON with baseline entries; verify against leaderboard.schema.json. [00:30].
+> [ ] <Challenge : Tests> End-to-end test: parse → run → validate → score on public samples; assert stable ranking order. [01:15].
+> [ ] <Challenge : CI> Dry-run the validate workflow locally (act or matrixless simulation); confirm flags/timeouts align with sandbox.yaml. [00:30].
+> [ ] <Challenge : Polish> Normalize error and summary messages; stable sort (score desc, then time, then memory). [01:00].
+
+Day 12 #> Docs polish, accessibility, freeze spec, RC tag
+=========================================================
+> [ ] <Challenge : Docs> Write story.rst (neutral, inclusive tone) and refine rules.rst/scoring.rst/data_io.rst for Sphinx. [01:30].
+> [ ] <Challenge : Docs> Update README & SUBMISSIONS with Ball o’ Some-specific snippets, manifest examples, and gotchas. [00:45].
+> [ ] <Challenge : Docs> Build Sphinx; fix warnings; ensure anchors mirror README sections. [00:45].
+> [ ] <Challenge : Examples> Add clarifying comments to examples/* and link to DATA.md grammar lines. [00:30].
+> [ ] <Challenge : Release> Freeze RULES.md (v1.0.0), bump VERSION, append CHANGELOG; mark spec “frozen” date. [00:15].
+> [ ] <Challenge : Release> Create pre-release tag `ball-o-some-v1.0.0-rc1`; note artifacts for Phase 3 wiring. [00:15].
+> [ ] <Challenge : QA> Final local_validate pass: one success, one graceful reject, one slow-but-correct case. [01:00].
+> [ ] <Challenge : Community> Tailor issue templates for clarifications & submissions; open a pinned “Read this first” Discussion. [00:30].
+> [ ] <Challenge : Accessibility> Quick a11y/content pass (reading level, alt text, color contrast in docs snippets). [01:00].
+> [ ] <Challenge : Review> Revisit .Rule-Coverage checklist; confirm each family has at least one hidden test. [00:45].
+
+
+PHASE 3 — Wire Challenge-Website — Test “Ball o’ Some” submission with a Friend
+===============================================================================
+
+Day 13 #> Challenges Hub repo + cross-repo wiring (leaderboards JSON)
+=====================================================================
+> [ ] <Challenge : Hub> Create/prepare challenges-hub repo structure (leaderboards/, schema/, README with update policy). [00:45].
+> [ ] <Challenge : Hub> Add leaderboard.schema.json (copy from runner/schemas with minor hub fields); validate sample. [00:30].
+> [ ] <Challenge : CI> Configure update_leaderboard.yml in challenge repo to commit to challenges-hub via repo-scoped token/permissions. [01:00].
+> [ ] <Challenge : CI> Add safe “Ready to rank” label gate; only labeled PRs can write to hub (branch protection + path filters). [00:45].
+> [ ] <Challenge : Hub> Seed leaderboards/ball-o-some.json with empty valid structure (metadata + entries=[]). [00:15].
+> [ ] <Challenge : Docs> Document cross-repo sync in dev/ci_cd.rst and SUBMISSIONS.md (what triggers leaderboard writes). [00:30].
+> [ ] <Challenge : Security> Create PAT/Actions token with least privilege; store as repo secret; rotate dummy token to test failure modes. [00:45].
+> [ ] <Challenge : QA> Dry-run update_hub_leaderboard.py against a temporary branch in challenges-hub; verify sort, dedupe, schema. [00:45].
+> [ ] <Challenge : Polish> Add CHANGELOG entries in both repos; add status badges (hub JSON presence, last update time). [00:45].
+
+Day 14 #> Website integration (Pelican) — render single challenge page + board
+==============================================================================
+> [ ] <Challenge : Website> Add challenges-hub as a submodule (or data-fetch step) to the site under data/challenges. [00:45].
+> [ ] <Challenge : Website> Implement Pelican/Jinja template for a Challenge page (Intro • Rules • Scoring • Data/IO • Submissions • Leaderboard). [01:15].
+> [ ] <Challenge : Website> Write a small loader to read leaderboards/ball-o-some.json at build time and pass to template. [00:45].
+> [ ] <Challenge : Website> Add anchor links, responsive table for leaderboard (score, time, memory, commit, badges). [00:45].
+> [ ] <Challenge : Website> Add “live last-updated” stamp (from JSON timestamp) and gentle empty-state message. [00:30].
+> [ ] <Challenge : Website> Build locally; fix warnings; verify UTF-8/emoji rendering; test no-JS experience. [00:45].
+> [ ] <Challenge : Website> Create a lightweight “Challenges index” page that links to Ball o’ Some details page. [00:30].
+> [ ] <Challenge : CI> Site workflow: pull latest hub JSON (submodule update or fetch step) before Pelican build. [00:45].
+> [ ] <Challenge : QA> Broken-link & accessibility pass on the new pages (contrast, alt text for decorative icons). [00:30].
+
+Day 15 #> Submissions Gateway (Option 1) — minimal bot + private test lane
+==========================================================================
+> [ ] <Challenge : Gateway> In challenges-hub, add Discussions category “Submissions Gateway” + issue template “Submit”. [00:30].
+> [ ] <Challenge : Gateway> Create gateway workflow (github-script) to: on new “Submit” issue → create private repo subm-<slug>-<handle>-<uuid>. [01:30].
+> [ ] <Challenge : Gateway> Invite submitter as collaborator; seed repo with submissions/template; set branch protection & secrets. [00:45].
+> [ ] <Challenge : Gateway> Reuse challenge validate_submission.yml inside subm-* repos (composite action or workflow_call). [00:45].
+> [ ] <Challenge : Gateway> Post status comment back on the original issue (scores, logs link), and auto-apply “Ready to rank” if pass. [00:45].
+> [ ] <Challenge : Security> Add concurrency guard (one active job per handle) and job timeout aligned with sandbox.yaml. [00:30].
+> [ ] <Challenge : Audit> Log trail: who created repo, commit SHA, manifest hash, runner image digest; store in subm repo Actions summary. [00:30].
+> [ ] <Challenge : Docs> Update SUBMISSIONS.md with gateway flow diagram + privacy policy (code reveal at end). [00:45].
+
+Day 16 #> Friend pilot — end-to-end submission + fixes
+======================================================
+> [ ] <Challenge : Pilot> Create a “Friend Pack” (zip or repo link) with instructions, manifest template, and examples. [00:30].
+> [ ] <Challenge : Pilot> Walk Friend through a real submission via gateway; capture friction points and timings. [01:30].
+> [ ] <Challenge : CI> Observe runner telemetry (time/mem, logs); tune timeouts or memory if needed; re-run once. [00:45].
+> [ ] <Challenge : Runner> Fix any parser/validator surprises uncovered; add regression tests. [01:00].
+> [ ] <Challenge : Hub> Verify leaderboard auto-updates; ensure stable sort & dedupe; record “first external score” in CHANGELOG. [00:30].
+> [ ] <Challenge : Website> Confirm site pulls new JSON and renders updated board; test mobile view. [00:30].
+> [ ] <Challenge : Docs> Add a short “Getting ranked” checklist to README and site page; clarify common errors from the pilot. [00:30].
+> [ ] <Challenge : Support> Open pinned Discussion “Pilot Findings & Fixes” summarizing what changed. [00:30].
+> [ ] <Challenge : Risk> Add emergency kill-switch in validate workflow (env flag to disable ranking writes temporarily). [00:30].
+> [ ] <Challenge : Release> Tag integration milestone `ball-o-some-int-rc1` and note next steps for Phase 4. [00:15].
+
+
+PHASE 4 — Minor tweaks, final tests, formally open “Ball o’ Some” and advertise
+===============================================================================
+
+Day 17 #> Final polish, hardening, freeze candidates
+====================================================
+> [ ] <Challenge : Triage> Review pilot issues/PRs; label by severity & area (Runner/IO/Docs/Website). [00:45].
+> [ ] <Challenge : Runner> Tighten harness resource capture (wall/CPU/peak RSS), consistent units & rounding. [00:45].
+> [ ] <Challenge : Sandbox> Re-check limits (cpus=1.0, mem=4g, pids-limit, net=none, read-only fs) match workflows. [00:30].
+> [ ] <Challenge : Tests> Finalize hidden test suites; freeze seeds/sizes and write suite metadata notes. [01:00].
+> [ ] <Challenge : Solver> Lock reference solver seeds; regenerate golden outputs and diff against RC. [00:30].
+> [ ] <Challenge : E2E> Run end-to-end on public samples + two hidden tiers via CI; archive summaries. [01:30].
+> [ ] <Challenge : UX> Normalize error/help messages; ensure first-bad-line + context snippet everywhere. [00:45].
+> [ ] <Challenge : Hygiene> Verify .dockerignore / clean.sh / artifact retention; remove stray files. [00:30].
+> [ ] <Challenge : Release> Tag RC2, update CHANGELOG and VERSION notes. [00:15].
+> [ ] <Challenge : Coverage> Revisit .Rule-Coverage; confirm each wildcard/invariant has tests; close stale clarifications. [00:30].
+> [ ] <Challenge : Security> Drop extra container capabilities; confirm non-root uid/gid mapping & safe mounts. [00:45].
+> [ ] <Challenge : QA> Lint/type-check pass; run unit + integration; green baseline snapshot. [00:15].
+
+Day 18 #> Website & content: launch copy, visuals, SEO/meta
+===========================================================
+> [ ] <Challenge : Website> Final copy pass on challenge page (Intro • Rules • Scoring • Data/IO • Submissions • Leaderboard). [01:00].
+> [ ] <Challenge : SEO> Add OpenGraph/Twitter meta, canonical URL, and social card references. [00:45].
+> [ ] <Challenge : Blog> Draft launch post (what/why/how + fairness & privacy policy). [01:15].
+> [ ] <Challenge : Blog> Edit/proof and add hero image/captions; finalize slug & tags. [00:45].
+> [ ] <Challenge : Assets> Create banner + small looping GIF of scoring/board (export web-friendly). [01:15].
+> [ ] <Challenge : Outreach> Poster PDF (A3 + printer-friendly B/W) with QR; generate short link + QR code. [00:45].
+> [ ] <Challenge : Links> Add UTM parameters and link aggregator entry; verify redirects. [00:30].
+> [ ] <Challenge : Comms> Draft email templates (friends/profs/student groups) + 3 short DM variants. [00:45].
+> [ ] <Challenge : Community> Pin Discussions: “Read This First”, “Clarifications”, “Show & Tell”. [00:30].
+> [ ] <Challenge : QA> Linkcheck + basic a11y sweep (contrast, alt text, heading order). [00:30].
+
+Day 19 #> Launch sequence & live monitoring
+===========================================
+> [ ] <Challenge : Launch> Flip kill-switches: enable “Ready to rank” path; unfreeze labels; verify secrets. [00:30].
+> [ ] <Challenge : Website> Publish site update; purge cache/Pages; spot-check leaderboard render. [00:30].
+> [ ] <Challenge : Announce> Post across channels (LinkedIn, X/Mastodon/Bluesky), tag communities; schedule one follow-up. [01:30].
+> [ ] <Challenge : Outreach> Send university/department mailing and lab/friends emails (bcc batches). [00:45].
+> [ ] <Challenge : Social> DM 10 early invitees with personal note + manifest template link. [00:30].
+> [ ] <Challenge : Monitor> Watch CI queues & leaderboard writes; investigate flakes; re-run as needed. [01:15].
+> [ ] <Challenge : Support> Triage new issues/discussions; respond with templates; tag clarifications. [01:15].
+> [ ] <Challenge : Analytics> Verify pageviews/referrers; check JSON freshness timestamps on site. [00:30].
+> [ ] <Challenge : Release> Tag v1.0.0 final + GitHub Release notes (highlights, rules freeze date). [00:30].
+> [ ] <Challenge : Media> Record a 60-sec screen-capture walkthrough; upload & link from README/site. [00:45].
+
+Day 20 #> First 24h sweep, hotfix path, promo round 2
+=====================================================
+> [ ] <Challenge : Metrics> Review first-day metrics (submissions, pass rate, runtime dist); open a “Day-1 Findings” note. [01:00].
+> [ ] <Challenge : Hotfix> Dry-run critical-fix pipeline (branch → quick tests → RC → tag); prepare patch template. [01:00].
+> [ ] <Challenge : Docs> Update FAQ/CLARIFICATIONS with top questions; link to examples. [00:45].
+> [ ] <Challenge : Tests> Add/adjust hidden cases if needed; rebalance family weights conservatively. [00:45].
+> [ ] <Challenge : Promo> Medium cross-post + LinkedIn Article version of launch post. [01:30].
+> [ ] <Challenge : Assets> Finalize print-ready poster & B/W variant; upload source files. [00:45].
+> [ ] <Challenge : Outreach> 10-slide classroom/meetup deck (what/why/how, fairness, how to submit). [01:00].
+> [ ] <Challenge : Backup> Snapshot leaderboards JSON; archive to hub branch with timestamp. [00:30].
+> [ ] <Challenge : Ops> Check Actions minutes/storage, artifact retention, and concurrency; adjust if needed. [00:30].
+> [ ] <Challenge : Schedule> Queue two reminder posts (T+3d, T+10d) with fresh hooks. [00:15].

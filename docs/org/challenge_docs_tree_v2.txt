@@ -1,0 +1,25 @@
+Challenge/
+	└── docs/									# Sphinx docs (kept simple; Pelican site links here)
+		├── org/
+		├── paper/
+		├── Makefile
+		├── make.bat
+		├── build/								# build output; gitignored
+		└── source/
+			├── conf.py
+			├── index.rst						# mirrors single-URL layout (Intro • Rules • Scoring • Data • Submissions)
+			├── _static/
+			├── _templates/
+			├── usage/
+			│	├── quickstart.rst
+			│	└── submission_contract.rst
+			├── challenge/
+			│	├── story.rst
+			│	├── rules.rst
+			│	├── scoring.rst
+			│	└── data_io.rst
+			├── dev/
+			│	├── architecture.rst			# judge-core + runner + gateway overview
+			│	├── ci_cd.rst					# workflows, secrets, hub sync
+			│	└── rst_creator.py				# (as requested) helper to auto-generate .rst from md/yaml
+			└── api/

@@ -1,0 +1,5 @@
+Challenge/
+	└── tests/
+		├── test_manifest_schema.py		# validates sample manifests
+		├── test_scoring.py				# unit tests for score() tolerances/penalties
+		└── test_io_parsers.py

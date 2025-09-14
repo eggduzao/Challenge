@@ -1,0 +1,56 @@
+Challenge/
+├── .git/								# created by git init
+├── .github/
+│	├── CODEOWNERS
+│	├── ISSUE_TEMPLATE/
+│	│	├── 01_submission.md			# collects handle, repo link, commit, language, license, notes
+│	│	├── 02_clarification.md
+│	│	└── 03_bug_report.md
+│	└── workflows/
+│		├── validate_submission.yml		# on PR to submissions/* OR via gateway sync; run in judge-core
+│		├── update_leaderboard.yml		# commit to challenges-hub/<slug>.json on “Ready to rank”
+│		├── release_docs.yml			# optional: build Sphinx, publish to Pages
+│		└── linkcheck.yml				# optional: docs link checker
+├── .gitignore							# Python/Node/OS junk + /build, /dist, .env, .DS_Store
+├── .gitattributes						# text eol normalization; linguist settings
+├── .dockerignore						# keep images lean; ignore docs/build, .git, etc.
+├── .editorconfig						# consistent spaces/encoding across editors
+├── .pre-commit-config.yaml				# optional hygiene (ruff/black/isort/yamllint/markdownlint)
+├── .Rule-Coverage						# checklist for invariants/wildcards coverage (human-maintained)
+├── .env.example						# local-only vars (never commit real secrets)
+├── clean.sh							# nukes caches/artifacts/venv; safe for participants
+├── LICENSE								# MIT (or your pick)
+├── README.md							# single-URL page outline: Intro • Rules • Scoring • Data/IO • Submissions • Leaderboard
+├── RULES.md							# invariants vs wildcards, freeze policy, adversarial inputs policy
+├── SCORING.md							# exact formula, tie-breakers, penalties, examples
+├── DATA.md								# formats, schemas, download pointers, I/O contracts
+├── SUBMISSIONS.md						# PR/gateway flow, manifest contract, languages policy, examples
+├── FAQ.md								# clarifications; link to Discussions
+├── CHANGELOG.md						# semver for RULES/spec & docs
+├── CLARIFICATIONS.md					# dated decisions synced from Discussions
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+├── CITATION.cff
+├── VERSION								# challenge spec version (e.g., 1.0.0)
+├── challenge.yaml						# machine-readable metadata (slug, title, spec_version, judge_image, limits)
+├── Makefile							# targets: docs, lint, test, validate-local, clean
+├── pyproject.toml						# minimal deps for runner/tools (pure-Python, no heavy frameworks)
+├── requirements.txt					# pinned runtime deps for runner/tools (alt to pyproject if preferred)
+├── ruff.toml							# optional lint rules
+├── mypy.ini							# optional type-check rules
+├── docker/								# (dev convenience; judging uses org-wide judge-core image)
+│	├── Dockerfile.dev					# local smoke-test image for harness/tools
+│	└── entrypoint.sh					# tiny wrapper to call runner hooks
+├── runner/
+├── tools/
+├── examples/
+├── data/
+│	├── README.md						# if any public datasets or generated corpora are provided
+│	├── public/							# optional small, shareable assets (keep <100MB/file)
+│	└── artifacts/						# produced locally; gitignored
+├── submissions/
+├── docs/
+├── tests/
+└── .docker/
+	└── README							# note: official judging uses ghcr.io/<org>/judge-core:<tag>; this repo only references it

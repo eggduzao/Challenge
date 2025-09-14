@@ -1,0 +1,12 @@
+Challenge/
+	└── examples/
+		├── README.md						# explain that only sanity/training examples live here
+		├── inputs/
+		│	├── sample1.in
+		│	├── sample2.in
+		│	└── tricky-open-castle.in		# demonstrates a legal wildcard edge
+		├── outputs/
+		│	├── sample1.out
+		│	└── sample2.out
+		└── logs/
+			└── expected_run.log			# illustrative judge output for one example
